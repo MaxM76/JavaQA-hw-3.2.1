@@ -1,300 +1,159 @@
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+
 public class RadioTest {
+    private final int stationsCountToSet = 15;
+    private final int minimumVolumeLevel = 0;
+    private final int maximumVolumeLevel = 100;
+    private final int correctVolumeToSet = 50;
+    private final int incorrectHighVolumeToSet = maximumVolumeLevel + 50;
+    private final int incorrectLowVolumeToSet = minimumVolumeLevel - 50;
+    private final int minimumStationIndex = 0;
+    private final int maximumStationIndex = stationsCountToSet - 1;
+    private final int correctStationIndexToSet = 7;
+    private final int incorrectHighStationIndexToSet = maximumStationIndex + 5;
+    private final int incorrectLowStationIndexToSet = -5;
 
-    @org.junit.jupiter.api.Test
+    Radio service = new Radio(stationsCountToSet);
+
+    @Test
     void shouldSetVolumeFromValueWithinAllowedInterval() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int volumeToSet = 5;
-        int expected = volumeToSet;
-
-        // вызываем целевой метод:
-        service.setVolume(volumeToSet);
+        service.setVolume(correctVolumeToSet);
         int actual = service.getVolume();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
-        assertEquals(expected, actual);
+        assertEquals(correctVolumeToSet, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldSetMinimalVolumeFromValueWithinAllowedInterval() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int volumeToSet = 0;
-        int expected = volumeToSet;
-
-        // вызываем целевой метод:
-        service.setVolume(volumeToSet);
+        service.setVolume(minimumVolumeLevel);
         int actual = service.getVolume();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
-        assertEquals(expected, actual);
+        assertEquals(minimumVolumeLevel, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldSetMaximalVolumeFromValueWithinAllowedInterval() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int volumeToSet = 10;
-        int expected = volumeToSet;
-
-        // вызываем целевой метод:
-        service.setVolume(volumeToSet);
+        service.setVolume(maximumVolumeLevel);
         int actual = service.getVolume();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
-        assertEquals(expected, actual);
+        assertEquals(maximumVolumeLevel, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldSetMinimalVolumeFromValueBelowAllowedInterval() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int volumeToSet = -10;
-        int expected = 0;
-
-        // вызываем целевой метод:
-        service.setVolume(volumeToSet);
+        service.setVolume(incorrectLowVolumeToSet);
         int actual = service.getVolume();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
-        assertEquals(expected, actual);
+        assertEquals(minimumVolumeLevel, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldSetMaximalVolumeFromValueExceedAllowedInterval() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int volumeToSet = 100;
-        int expected = 10;
-
-        // вызываем целевой метод:
-        service.setVolume(volumeToSet);
+        service.setVolume(incorrectHighVolumeToSet);
         int actual = service.getVolume();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
-        assertEquals(expected, actual);
+        assertEquals(maximumVolumeLevel, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldUpVolumeLevel() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int volumeToSet = 5;
-        service.setVolume(volumeToSet);
-        int expected = volumeToSet + 1;
-
-        // вызываем целевой метод:
+        service.setVolume(correctVolumeToSet);
+        int expected = correctVolumeToSet + 1;
         service.increaseVolume();
         int actual = service.getVolume();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
         assertEquals(expected, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldNotUpVolumeLevel() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int volumeToSet = 10;
-        service.setVolume(volumeToSet);
-        int expected = volumeToSet;
-
-        // вызываем целевой метод:
+        service.setVolume(maximumVolumeLevel);
         service.increaseVolume();
         int actual = service.getVolume();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
-        assertEquals(expected, actual);
+        assertEquals(maximumVolumeLevel, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldDownVolumeLevel() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int volumeToSet = 5;
-        service.setVolume(volumeToSet);
-        int expected = volumeToSet - 1;
-
-        // вызываем целевой метод:
+        service.setVolume(correctVolumeToSet);
+        int expected = correctVolumeToSet - 1;
         service.decreaseVolume();
         int actual = service.getVolume();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
         assertEquals(expected, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldNotDownVolumeLevel() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int volumeToSet = 0;
-        service.setVolume(volumeToSet);
-        int expected = volumeToSet;
-
-        // вызываем целевой метод:
+        service.setVolume(minimumVolumeLevel);
         service.decreaseVolume();
         int actual = service.getVolume();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
-        assertEquals(expected, actual);
+        assertEquals(minimumVolumeLevel, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldSetStationFromValueWithinAllowedInterval() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int stationToSet = 5;
-        int expected = stationToSet;
-
-        // вызываем целевой метод:
-        service.setStation(stationToSet);
+        service.setStation(correctStationIndexToSet);
         int actual = service.getStation();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
-        assertEquals(expected, actual);
+        assertEquals(correctStationIndexToSet, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldSetFirstStationFromValueWithinAllowedInterval() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int stationToSet = 0;
-        int expected = stationToSet;
-
-        // вызываем целевой метод:
-        service.setStation(stationToSet);
+        service.setStation(minimumStationIndex);
         int actual = service.getStation();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
-        assertEquals(expected, actual);
+        assertEquals(minimumStationIndex, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldSetLastStationFromValueWithinAllowedInterval() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int stationToSet = 9;
-        int expected = stationToSet;
-
-        // вызываем целевой метод:
-        service.setStation(stationToSet);
+        service.setStation(maximumStationIndex);
         int actual = service.getStation();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
-        assertEquals(expected, actual);
+        assertEquals(maximumStationIndex, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldNotSetStationFromValueBelowAllowedInterval() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int stationToSet = -9;
         int expected = service.getStation();
-
-        // вызываем целевой метод:
-        service.setStation(stationToSet);
+        service.setStation(incorrectLowStationIndexToSet);
         int actual = service.getStation();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
         assertEquals(expected, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldNotSetStationFromValueExceedAllowedInterval() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int stationToSet = 19;
         int expected = service.getStation();
-
-        // вызываем целевой метод:
-        service.setStation(stationToSet);
+        service.setStation(incorrectHighStationIndexToSet);
         int actual = service.getStation();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
         assertEquals(expected, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldSwitchToNextStation() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int stationToSet = 5;
-        service.setStation(stationToSet);
-        int expected = stationToSet + 1;
-
-        // вызываем целевой метод:
+        service.setStation(correctStationIndexToSet);
+        int expected = correctStationIndexToSet + 1;
         service.nextStation();
         int actual = service.getStation();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
         assertEquals(expected, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldSwitchToPreviousStation() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int stationToSet = 5;
-        service.setStation(stationToSet);
-        int expected = stationToSet - 1;
-
-        // вызываем целевой метод:
+        service.setStation(correctStationIndexToSet);
+        int expected = correctStationIndexToSet - 1;
         service.prevStation();
         int actual = service.getStation();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
         assertEquals(expected, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldSwitchToFirstStationFromLastStation() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int stationToSet = 9;
-        service.setStation(stationToSet);
-        int expected = 0;
-
-        // вызываем целевой метод:
+        service.setStation(maximumStationIndex);
         service.nextStation();
         int actual = service.getStation();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
-        assertEquals(expected, actual);
+        assertEquals(minimumStationIndex, actual);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void shouldSwitchToLastStationFromFirstStation() {
-        Radio service = new Radio();
-
-        // подготавливаем данные:
-        int stationToSet = 0;
-        service.setStation(stationToSet);
-        int expected = 9;
-
-        // вызываем целевой метод:
+        service.setStation(minimumStationIndex);
         service.prevStation();
         int actual = service.getStation();
-
-        // производим проверку (сравниваем ожидаемый и фактический):
-        assertEquals(expected, actual);
+        assertEquals(maximumStationIndex, actual);
     }
 }
